@@ -20,12 +20,30 @@ class ValidationSample extends Component {
             clicked:true,
             validated:this.state.password === '0000'
         })
+        this.input.focus();
     }
 
     render(){
         return(
             <div>
                 <input type='password'
+                       /* 
+                          ref를 사용해야 하는 상황
+                          : state만으로 해결할 수 없는 기능을 구현할 때
+
+                          1) 특정 input에 포커스 주기
+                          2) 스크롤 박스 조작하기
+                          3) canvas 요소에 그림 그리기 등
+
+                          사용법 
+                          <input ref={(ref) => {this.input=ref}} />
+                                       ref 값으로는 콜백 함수를 전달
+                                       콜백 함수는 ref를 파라미터로 가지며, 
+                                       콜백 함수 내부에서 컴포넌트의 멤버 변수에 ref를 담는 코드 작성
+
+                                       this.input은 input 요소의 DOM을 가리킴.
+                       */
+                       ref={(ref) => this.input=ref}
                        value={this.state.password}
                        /*
                           onChange 이벤트 발생 시 
