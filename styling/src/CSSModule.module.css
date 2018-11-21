@@ -5,6 +5,11 @@
     font-size:2rem;
 }
 
+.inverted{
+    color:#000;
+    background-color:#fff;
+}
+
 :global .something{
     font-weight:800;
     color:aqua;
