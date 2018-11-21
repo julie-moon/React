@@ -1,0 +1,21 @@
+.wrapper{
+    background-color:#000;
+    padding:1rem;
+    color:#fff;
+    font-size:2rem;
+    &.inverted{
+        // inverted가 .wrapper와 함께 사용됐을 때만 적용
+        color:#000;
+        background-color:#fff;
+        border:1px solid #000;
+    }
+}
+
+
+
+:global{
+    .something{
+        font-weight:800;
+        color:aqua;
+    }
+}
