@@ -35,7 +35,7 @@ class TodoItem extends Component{
                     text 클래스와 done 클래스가 함께 있으면 중간 선 표시됨
                 */}
                 <div className={cx('text', {done})}>{children}</div>
-                <div className={cx('delete')} onClick={onRemove}>[지우기]</div>
+                <div className={cx('delete')} onClick={(e) => {onRemove(); e.stopPropagation();}}>[지우기]</div>
             </div>
         )
     }
