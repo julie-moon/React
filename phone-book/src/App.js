@@ -8,9 +8,16 @@ class App extends Component {
     information : [
       {id:0, name:'문주영', phone:'010-1234-5678'},
       {id:1, name:'홍길동', phone:'010-2345-6789'}
-    ]
+    ],
+    keyword:''
   }
   
+  handleChange = (e) => {
+      this.setState({
+          keyword:e.target.value
+      })
+  }
+
   /*
       부모 컴포넌트에게 정보 전달하기
       1) 부모 컴포넌트에서 메소드 만들기(handleCreate)
@@ -44,12 +51,22 @@ class App extends Component {
   }
   
   render() {
-    const {information} = this.state;
-    const {handleCreate, handleRemove, handleUpdate} = this;
+    const { information, keyword } = this.state;
+    const { handleChange, handleCreate, handleRemove, handleUpdate } = this;
+    const filteredList = information.filter(
+        info => info.name.indexOf(keyword) !== -1
+    )
+
     return (
         <div>
             <PhoneForm onCreate={handleCreate} />
-            <PhoneInfoList data={information} onRemove={handleRemove} onUpdate={handleUpdate} />
+            <p>
+                <input value={keyword} 
+                       onChange={handleChange}
+                       placeholder='검색할 이름을 입력하세요.'/>
+            </p>
+            <hr />
+            <PhoneInfoList data={filteredList} onRemove={handleRemove} onUpdate={handleUpdate} />
         </div>
     );
   }

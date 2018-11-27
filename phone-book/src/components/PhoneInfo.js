@@ -28,6 +28,17 @@ class PhoneInfo extends Component{
         phone:''
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if(!this.state.editing
+           && !nextState.editing 
+           && nextProps.info === this.props.info) {
+            // 수정 상태가 아니고, info 값이 같다면 리렌더링 안함    
+            return false; 
+        } else {
+            return true; // 나머지 경우엔 리렌더링 함
+        }
+    }
+
     handleRemove = () => {
         const { info, onRemove } = this.props;
         onRemove(info.id); // 삭제 버튼이 클릭되면 onRemove에 id를 넣어 호출
@@ -35,11 +46,24 @@ class PhoneInfo extends Component{
 
     // editing 값을 반전시키는 함수
     handleToggleEdit = () => {
-        const { editing } = this.state;
+        const { info, onUpdate } = this.props;
+        const { editing, name, phone } = this.state
+          
+        if(editing) { // editing이 true일 때
+            onUpdate(info.id, { // onUpdate 호출 후 state값 넘겨줌(변경할 값)
+                name:name,
+                phone:phone
+            })
+        } else { // editing이 false일 때
+            this.setState({ // info.name, info.phone을 state값으로 설정
+                name:info.name,
+                phone:info.phone
+            })
+        }
         this.setState({
             // true -> false
             // false -> true
-            editing : !editing
+            editing:!editing
         })
     }
 
@@ -50,28 +74,6 @@ class PhoneInfo extends Component{
         })
     }
 
-    // editing 값이 바뀔 때 처리해야 할 로직
-    componentDidUpdate(prevProps, prevState) {
-        const { info, onUpdate } = this.props;
-
-        // editing 값이 false -> true로 전환될 때
-        if(!prevState.editing && this.state.editing) {
-            // info의 값을 state에 넣어준다.(input 보여줄것임)
-            this.setState({
-                name:info.name,
-                phone:info.phone
-            })
-        }
-
-        // editing 값이 true -> false로 전환될 때
-        if(prevState.editing && !this.state.editing) {
-            onUpdate(info.id, {
-                name:this.state.name,
-                phone:this.state.phone
-            })
-        }
-    }
-
     render() {
         const style = {
             border:'1px solid #000',
@@ -79,9 +81,11 @@ class PhoneInfo extends Component{
             padding:'8px'
         }
 
-        const { name, phone } = this.props.info;
+        const { name, phone, id } = this.props.info;
         const { handleRemove, handleToggleEdit, handleChange } = this;
         const { editing } = this.state;
+
+        console.log('render PhoneInfo' + id);
 
         return (
             <div style={style}>
@@ -90,10 +94,10 @@ class PhoneInfo extends Component{
                     <Fragment>
                         <div>
                             <input name="name"
-                                   value={name}
+                                   value={this.state.name}
                                    onChange={handleChange} />
                             <input name="phone"
-                                   value={phone}
+                                   value={this.state.phone}
                                    onChange={handleChange} />
                         </div>
                     </Fragment>
