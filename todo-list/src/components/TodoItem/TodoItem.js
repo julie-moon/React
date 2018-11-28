@@ -5,6 +5,14 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
 class TodoItem extends Component{
+    shouldComponentUpdate(nextProps, nextState) {
+        /* 
+            this.props.done 값과 
+            nextProps.done 값이 같지 않을 때
+            true 리턴함
+        */
+        return this.props.done !== nextProps.done;
+    }
     render() {
 
         /*
